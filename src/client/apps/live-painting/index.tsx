@@ -53,7 +53,6 @@ export function LivePainting() {
 
 	const { send } = useSDK<unknown, string>(APP_ID, {
 		onMessage(message) {
-			console.log(message);
 			switch (message.action) {
 				case "livePainting:started": {
 					setIsRunning(true);
@@ -167,7 +166,10 @@ export function LivePainting() {
 				<StyledButtonWrapper>
 					<Box sx={{ flex: 1 }} />
 					{/* Save the image to disk (includes a control + s listener) */}
-					<SaveButton image={image} />
+					<SaveButton
+						image={image}
+						prompt={[prompt, illustrationStyles[illustrationStyle]].join(", ")}
+					/>
 				</StyledButtonWrapper>
 			</StyledStickyHeader>
 			{/* Main Area includes the drawing and rendering area */}

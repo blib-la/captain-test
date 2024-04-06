@@ -75,7 +75,6 @@ async function createPromptWindow() {
 	window_.on("show", () => {
 		window_.focus();
 		globalShortcut.register("Escape", async () => {
-			console.log("Escape is pressed");
 			window_.hide();
 		});
 	});
@@ -93,7 +92,6 @@ async function createPromptWindow() {
 
 	ipcMain.on(buildKey([ID.WINDOW], { suffix: ":resize" }), (_event, { height, width }) => {
 		if (width && height) {
-			console.log(height, width);
 			window_.setResizable(true);
 			window_.setSize(750, Math.ceil(height));
 			window_.setResizable(false);
@@ -103,7 +101,6 @@ async function createPromptWindow() {
 
 	const promptShortcut = "Control+Alt+Space";
 	globalShortcut.register(promptShortcut, async () => {
-		console.log(promptShortcut);
 		window_.show();
 	});
 	logger.info(`createPromptWindow(): added global shortcut listener`);
@@ -320,6 +317,11 @@ export async function main() {
 				apps.core.on("close", () => {
 					apps.core = null;
 				});
+
+				if (apps.core.isMinimized()) {
+					apps.core.restore();
+				}
+
 				apps.core.focus();
 			} else {
 				apps[appId] ||= await (isCoreApp(appId)
@@ -329,6 +331,10 @@ export async function main() {
 					apps[appId] = null;
 					// TODO Needs to ensure that all processes opened by this window are closed
 				});
+				if (apps[appId]!.isMinimized()) {
+					apps[appId]!.restore();
+				}
+
 				apps[appId]!.focus();
 			}
 		}

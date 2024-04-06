@@ -1,5 +1,6 @@
 import { CustomScrollbars } from "@captn/joy/custom-scrollbars";
 import { useSDK } from "@captn/react/use-sdk";
+import { useVectorScroll } from "@captn/react/use-vector-store";
 import { localFile } from "@captn/utils/string";
 import ClearIcon from "@mui/icons-material/Clear";
 import Box from "@mui/joy/Box";
@@ -68,20 +69,15 @@ export function Story() {
 		[locale, selectedImages]
 	);
 
-	const loadImages = useCallback(() => {
-		window.ipc.inventoryStore
-			.get<{ filePath: string; id: string }[]>("files.image", [])
-			.then(images_ => {
-				console.log(images_);
-				setImages(images_);
-			});
-	}, [setImages]);
+	const { data: images_ } = useVectorScroll({
+		with_payload: true,
+		filter: { must: [{ key: "type", match: { value: "image" } }] },
+	});
 
 	const isDisabled = selectedImages.length === 0 || !hasOpenAiApiKey;
 
 	useSDK<unknown, { done: boolean; story: string }>(APP_ID, {
 		async onMessage(message) {
-			console.log(message);
 			setStory(message.payload.story);
 			if (message.payload.done) {
 				setGenerating(false);
@@ -101,14 +97,13 @@ export function Story() {
 	});
 
 	useEffect(() => {
-		loadImages();
-		const unsubscribe = window.ipc.on("images", images_ => {
-			setImages(images_);
-		});
-		return () => {
-			unsubscribe();
-		};
-	}, [loadImages, setImages]);
+		setImages(
+			images_.map(({ id, payload: { filePath } }) => ({
+				id: id!.toString(),
+				filePath: filePath!,
+			}))
+		);
+	}, [images_, setImages]);
 
 	useEffect(() => {
 		window.ipc.send("hasOpenAiApiKey");

@@ -1,3 +1,4 @@
+import { useVectorStore } from "@captn/react/use-vector-store";
 import Box from "@mui/joy/Box";
 import Chip, { type ChipProps } from "@mui/joy/Chip";
 import Input from "@mui/joy/Input";
@@ -9,17 +10,16 @@ import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { evaluate } from "mathjs";
-import { useTranslation } from "next-i18next";
 import type { RefObject } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { buildKey } from "#/build-key";
 import { ID } from "#/enums";
+import { DynamicIcon } from "@/atoms/icons/dynamic";
 import { Logo } from "@/atoms/logo";
 import { Captain } from "@/atoms/logo/captain";
 import { handleCaptainAction } from "@/ions/handlers/action";
 import { useResizeObserver } from "@/ions/hooks/resize-observer";
-import { useVectorStore } from "@/ions/hooks/vector-store";
 import { makeStaticProperties } from "@/ions/i18n/get-static";
 
 export function useAutoFocusIPC<T extends HTMLElement>(reference: RefObject<T>) {
@@ -45,13 +45,18 @@ export function useAutoSizerWindow<T extends HTMLElement>(reference: RefObject<T
 }
 
 export default function Page() {
-	const { t } = useTranslation(["texts"]);
-
 	const frameReference = useRef<HTMLDivElement | null>(null);
 	const promptReference = useRef<HTMLInputElement | null>(null);
 	const [value, setValue] = useState("");
 	const [evaluationResult, setEvaluationResult] = useState("");
-	const suggestions = useVectorStore(value);
+	const { data: suggestions } = useVectorStore(value, {
+		filter: {
+			must_not: [
+				{ key: "type", match: { value: "image" } },
+				{ key: "type", match: { value: "markdown" } },
+			],
+		},
+	});
 
 	useAutoFocusIPC(promptReference);
 	useAutoSizerWindow(frameReference);
@@ -204,7 +209,13 @@ export default function Page() {
 										}}
 									>
 										<ListItemDecorator>
-											<Logo sx={{ color: "currentColor" }} />
+											{suggestion.payload.icon ? (
+												<DynamicIcon icon={suggestion.payload.icon} />
+											) : (
+												<Logo
+													sx={{ fontSize: 24, color: "currentColor" }}
+												/>
+											)}
 										</ListItemDecorator>
 										<ListItemContent>
 											<Typography level="h4" component="div">

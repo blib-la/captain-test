@@ -72,7 +72,7 @@ ipcMain.on(
 		const channel = `${appId}:${APP_MESSAGE_KEY}`;
 		if (process_) {
 			event.sender.send(channel, { action: "livePainting:started", payload: true });
-			logger.info(`livePatinting: started`);
+			logger.info(`livePainting: started`);
 			return;
 		}
 
@@ -96,7 +96,7 @@ ipcMain.on(
 		process_ = execa(pythonBinaryPath, ["-u", scriptPath, ...scriptArguments]);
 
 		if (process_.stdout && process_.stderr) {
-			logger.info(`livePatinting: processing data`);
+			logger.info(`livePainting: processing data`);
 			process_.stdout.on("data", async data => {
 				const dataString = data.toString();
 
@@ -237,9 +237,6 @@ ipcMain.on(
 
 					promises.push(
 						clone(repository, destination, {
-							onProgress(progress) {
-								console.log(progress);
-							},
 							onCompleted() {
 								downloadsStore.set(repository, DownloadState.DONE);
 
@@ -309,14 +306,12 @@ ipcMain.on(
 								console.log(error);
 							},
 							onChunk(story) {
-								console.log(story);
 								event.sender.send(channel, {
 									action: "story:create",
 									payload: { story, done: false },
 								});
 							},
 							onDone(story) {
-								console.log(story);
 								event.sender.send(channel, {
 									action: "story:create",
 									payload: { story, done: true },

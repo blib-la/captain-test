@@ -6,19 +6,26 @@ import {
 	WINDOW_CLOSE_KEY,
 	WINDOW_MAXIMIZE_KEY,
 	WINDOW_MINIMIZE_KEY,
+	VECTOR_STORE_SAVED_KEY,
 	DownloadState,
+	ERROR_KEY,
 } from "@captn/utils/constants";
 import { BrowserWindow, dialog, ipcMain } from "electron";
 import { download } from "electron-dl";
+import { execa } from "execa";
 import { v4 } from "uuid";
 
 import { buildKey } from "#/build-key";
+import { VECTOR_STORE_COLLECTION } from "#/constants";
 import { ID } from "#/enums";
-import { getFileType } from "#/string";
+import { extractH1Headings, getFileType } from "#/string";
+import type { VectorStoreDocument } from "#/types/vector-store";
 import { apps } from "@/apps";
+import { VectorStore } from "@/services/vector-store";
 import { inventoryStore, downloadsStore } from "@/stores";
 import { pushToStore } from "@/stores/utils";
 import { getCaptainData, getCaptainDownloads, getDirectory } from "@/utils/path-helpers";
+import { splitDocument } from "@/utils/split-documents";
 import { unpack } from "@/utils/unpack";
 
 ipcMain.on(WINDOW_CLOSE_KEY, () => {
@@ -82,6 +89,14 @@ ipcMain.handle(buildKey([ID.FILE], { prefix: "path:", suffix: ":get" }), async (
 	}
 });
 
+async function writePngMetaData(filePath: string, description: string) {
+	const pythonBinaryPath = getCaptainData("python-embedded/python.exe");
+	const scriptPath = getDirectory("python/png/main.py");
+	const scriptArguments = ["--image_path", filePath, "--description", description];
+
+	return execa(pythonBinaryPath, ["-u", scriptPath, ...scriptArguments]);
+}
+
 /**
  * Handles an IPC event to write content to a file at a specified subpath within the application's data directory.
  * This handler determines the file's directory and type, ensures the directory exists (creating it if necessary),
@@ -101,12 +116,13 @@ ipcMain.handle(buildKey([ID.FILE], { prefix: "path:", suffix: ":get" }), async (
 ipcMain.handle(
 	buildKey([ID.FILE], { suffix: ":write" }),
 	async (
-		_event,
+		event,
 		subpath: string,
 		content: string,
 		options: {
 			encoding?: BufferEncoding;
-		} = {}
+		} = {},
+		context?: string
 	) => {
 		const filePath = getCaptainData("files", subpath);
 		const { dir: directory } = path.parse(filePath);
@@ -119,12 +135,57 @@ ipcMain.handle(
 
 		// Write the file content
 		await fsp.writeFile(filePath, content, options);
+		if (fileType === "image" && context) {
+			try {
+				await writePngMetaData(filePath, context);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
 		const id = v4();
-		const keyPath = `files.${fileType}`;
-		// Update the application's file inventory
-		const files = inventoryStore.get<string, { filePath: string; id: string }[]>(keyPath, []);
-		files.push({ filePath, id });
-		inventoryStore.set(keyPath, files);
+		try {
+			const vectorStore = VectorStore.getInstance;
+			let label = fileType;
+			const documents: VectorStoreDocument[] = [];
+			if (fileType === "markdown") {
+				// For markdown, we use the H1 if it exists
+				label = extractH1Headings(content)[0] || fileType;
+				const chunks = await splitDocument("md", content, {
+					chunkSize: 200,
+					chunkOverlap: 10,
+				});
+				for (const chunk of chunks) {
+					documents.push({
+						content: chunk,
+						payload: {
+							id,
+							label,
+							type: "markdown",
+							language: "en",
+							filePath,
+						},
+					});
+				}
+			} else {
+				documents.push({
+					content: context ?? content,
+					payload: {
+						id,
+						label,
+						type: fileType,
+						language: "en",
+						filePath,
+					},
+				});
+			}
+
+			const operations = await vectorStore.upsert(VECTOR_STORE_COLLECTION, documents);
+
+			event.sender.send(VECTOR_STORE_SAVED_KEY, operations);
+		} catch (error) {
+			event.sender.send(ERROR_KEY, error);
+		}
 
 		return { filePath, fileType };
 	}
@@ -135,14 +196,12 @@ ipcMain.handle(
 	async (_event, source: string, destination: string) => {
 		const filePath = getCaptainData("files", destination);
 		const { dir: directory } = path.parse(filePath);
-		console.log("COPY FILE 1", { source, filePath });
 
 		// Ensure the directory exists, creating it if necessary
 		if (!existsSync(directory)) {
 			await fsp.mkdir(directory, { recursive: true });
 		}
 
-		console.log("COPY FILE 2", { source, filePath });
 		// Copy the file
 		await fsp.copyFile(source, filePath);
 	}
@@ -228,7 +287,6 @@ ipcMain.handle(
 				overwrite: true,
 				directory: getCaptainDownloads(),
 				onProgress(progress) {
-					console.log(progress);
 					if (apps[item.appId]) {
 						apps[item.appId]?.webContents.send("download", progress);
 					}

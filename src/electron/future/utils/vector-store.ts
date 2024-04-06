@@ -1,4 +1,5 @@
 import fsp from "node:fs/promises";
+import path from "node:path";
 
 // The @xenova/transformers package is imported directly from GitHub as it includes
 // certain functionalities that are not available in the npm published version. This package
@@ -9,13 +10,17 @@ import fsp from "node:fs/promises";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { env } from "@xenova/transformers";
+import exifr from "exifr";
 import { globby } from "globby";
 import matter from "gray-matter";
 
 import { VECTOR_STORE_COLLECTION } from "#/constants";
+import { extractH1Headings } from "#/string";
+import type { VectorStoreDocument } from "#/types/vector-store";
 import { CustomHuggingFaceTransformersEmbeddings } from "@/langchain/custom-hugging-face-transformers-embeddings";
 import { VectorStore } from "@/services/vector-store";
 import { getCaptainData, getCaptainDownloads, getDirectory } from "@/utils/path-helpers";
+import { splitDocument } from "@/utils/split-documents";
 
 export async function initialize() {
 	env.localModelPath = getCaptainDownloads("llm/embeddings");
@@ -38,6 +43,14 @@ export async function reset() {
 }
 
 export async function populateFromDocuments() {
+	const imagePaths = await globby(["**/*.png"], {
+		cwd: getCaptainData("files/images"),
+		absolute: true,
+	});
+	const storyPaths = await globby(["**/*.md"], {
+		cwd: getCaptainData("files/stories"),
+		absolute: true,
+	});
 	const documentPaths = await globby(["**/*.md"], {
 		cwd: getCaptainData("apps"),
 		absolute: true,
@@ -48,6 +61,43 @@ export async function populateFromDocuments() {
 		absolute: true,
 	});
 
+	const images = await Promise.all(
+		imagePaths.map(async imagePath => {
+			const exif = await exifr.parse(imagePath);
+			const { name } = path.parse(imagePath);
+			return {
+				content: exif.Description,
+				payload: {
+					id: name,
+					type: "image",
+					language: "en",
+					label: "Image",
+					filePath: imagePath,
+				},
+			};
+		})
+	);
+	const stories_: VectorStoreDocument[] = [];
+	for (const storyPath of storyPaths) {
+		const content = await fsp.readFile(storyPath, "utf8");
+		const { dir } = path.parse(storyPath);
+		const chunks = await splitDocument("md", content, { chunkSize: 200, chunkOverlap: 10 });
+		for (const chunk of chunks) {
+			stories_.push({
+				content: chunk,
+				payload: {
+					id: dir.replaceAll("\\", "/").split("/").pop()!,
+					label: extractH1Headings(content)[0] || "Story",
+					type: "markdown",
+					language: "en",
+					filePath: storyPath,
+				},
+			});
+		}
+	}
+
+	const stories = await Promise.all(stories_);
+
 	const documents = await Promise.all(
 		[...documentPaths, ...corePaths].map(async documentPath => {
 			const markdownWithFrontmatter = await fsp.readFile(documentPath, "utf8");
@@ -56,6 +106,7 @@ export async function populateFromDocuments() {
 				content,
 				payload: {
 					id: data.id,
+					type: data.type,
 					language: data.language,
 					action: data.action,
 					label: data.label,
@@ -63,11 +114,12 @@ export async function populateFromDocuments() {
 					parameters: data.parameters,
 					function: data.function,
 					icon: data.icon,
+					iconColor: data.iconColor,
 				},
 			};
 		})
 	);
 	const vectorStore = VectorStore.getInstance;
 
-	return vectorStore.upsert(VECTOR_STORE_COLLECTION, documents);
+	return vectorStore.upsert(VECTOR_STORE_COLLECTION, [...documents, ...images, ...stories]);
 }
