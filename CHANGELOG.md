@@ -1,3 +1,10 @@
+# [1.0.0-alpha.30](https://github.com/blib-la/captain/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2024-04-06)
+
+
+### Features
+
+* extended vector store ([#182](https://github.com/blib-la/captain/issues/182)) ([76d62db](https://github.com/blib-la/captain/commit/76d62db9d15ebbdee0595341a5510685844068c9)), closes [#111](https://github.com/blib-la/captain/issues/111) [#112](https://github.com/blib-la/captain/issues/112)
+
 # [1.0.0-alpha.29](https://github.com/blib-la/captain/compare/v1.0.0-alpha.28...v1.0.0-alpha.29) (2024-03-25)
 
 
