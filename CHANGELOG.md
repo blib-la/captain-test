@@ -1,3 +1,10 @@
+# [1.0.0-alpha.31](https://github.com/blib-la/captain/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2024-04-07)
+
+
+### Features
+
+* add explorer app ([#184](https://github.com/blib-la/captain/issues/184)) ([3ec60ee](https://github.com/blib-la/captain/commit/3ec60eeed1195a4b3bfbaaf276185a833c10b36f)), closes [#119](https://github.com/blib-la/captain/issues/119) [#120](https://github.com/blib-la/captain/issues/120)
+
 # [1.0.0-alpha.30](https://github.com/blib-la/captain/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2024-04-06)
 
 
