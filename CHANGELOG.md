@@ -1,3 +1,10 @@
+# [1.0.0-alpha.34](https://github.com/blib-la/captain/compare/v1.0.0-alpha.33...v1.0.0-alpha.34) (2024-04-08)
+
+
+### Features
+
+* add text to image app ([#189](https://github.com/blib-la/captain/issues/189)) ([e6845df](https://github.com/blib-la/captain/commit/e6845df243a1aa8f5981791aac5dc4348b628c17)), closes [#190](https://github.com/blib-la/captain/issues/190)
+
 # [1.0.0-alpha.33](https://github.com/blib-la/captain/compare/v1.0.0-alpha.32...v1.0.0-alpha.33) (2024-04-08)
 
 
