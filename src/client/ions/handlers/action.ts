@@ -29,6 +29,7 @@ export function handleCaptainAction(response: VectorStoreResponse) {
 		window.ipc.send(buildKey([ID.APP], { suffix: ":open" }), {
 			appId: response.payload.id,
 			action: response.payload.action,
+			options: response.payload.parameters,
 		});
 	}
 }
