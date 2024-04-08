@@ -1,3 +1,10 @@
+# [1.0.0-alpha.35](https://github.com/blib-la/captain/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2024-04-08)
+
+
+### Bug Fixes
+
+* text to image returns a captain image ([#191](https://github.com/blib-la/captain/issues/191)) ([a564d76](https://github.com/blib-la/captain/commit/a564d7659be9ed53c8ac8e85ad03420fd08166e0))
+
 # [1.0.0-alpha.34](https://github.com/blib-la/captain/compare/v1.0.0-alpha.33...v1.0.0-alpha.34) (2024-04-08)
 
 
