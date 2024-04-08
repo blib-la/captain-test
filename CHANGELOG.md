@@ -1,3 +1,10 @@
+# [1.0.0-alpha.33](https://github.com/blib-la/captain/compare/v1.0.0-alpha.32...v1.0.0-alpha.33) (2024-04-08)
+
+
+### Features
+
+* serve apps ([#187](https://github.com/blib-la/captain/issues/187)) ([4022c20](https://github.com/blib-la/captain/commit/4022c20489a6a3804de91f5965b5e2bd6f972b16))
+
 # [1.0.0-alpha.32](https://github.com/blib-la/captain/compare/v1.0.0-alpha.31...v1.0.0-alpha.32) (2024-04-07)
 
 
