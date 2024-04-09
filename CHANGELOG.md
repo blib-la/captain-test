@@ -1,3 +1,10 @@
+# [1.0.0-alpha.36](https://github.com/blib-la/captain/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2024-04-09)
+
+
+### Features
+
+* extended text to image ([#192](https://github.com/blib-la/captain/issues/192)) ([a2c4d6e](https://github.com/blib-la/captain/commit/a2c4d6eede693733567fc7274dc811457f576838))
+
 # [1.0.0-alpha.35](https://github.com/blib-la/captain/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2024-04-08)
 
 
