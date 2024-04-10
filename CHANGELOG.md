@@ -1,3 +1,10 @@
+# [1.0.0-alpha.37](https://github.com/blib-la/captain/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2024-04-10)
+
+
+### Features
+
+* **image-to-image:** added ipc buffer ([#194](https://github.com/blib-la/captain/issues/194)) ([4ac0905](https://github.com/blib-la/captain/commit/4ac09059d82db5f9724cba4aa7cbf7ababde01cd))
+
 # [1.0.0-alpha.36](https://github.com/blib-la/captain/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2024-04-09)
 
 
