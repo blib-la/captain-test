@@ -1,3 +1,10 @@
+# [1.0.0-alpha.39](https://github.com/blib-la/captain/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2024-04-11)
+
+
+### Bug Fixes
+
+* ensure better compat to old vs new api ([#197](https://github.com/blib-la/captain/issues/197)) ([5f15b06](https://github.com/blib-la/captain/commit/5f15b068cd0c147f87d642455adcee1072237528))
+
 # [1.0.0-alpha.38](https://github.com/blib-la/captain/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2024-04-11)
 
 
