@@ -1,3 +1,10 @@
+# [1.0.0-alpha.38](https://github.com/blib-la/captain/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2024-04-11)
+
+
+### Features
+
+* live painting options ([#196](https://github.com/blib-la/captain/issues/196)) ([a1833b6](https://github.com/blib-la/captain/commit/a1833b632412f371188193a98ad475db2206bba1))
+
 # [1.0.0-alpha.37](https://github.com/blib-la/captain/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2024-04-10)
 
 
