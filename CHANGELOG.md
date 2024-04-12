@@ -1,3 +1,10 @@
+# [1.0.0-alpha.40](https://github.com/blib-la/captain/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2024-04-12)
+
+
+### Features
+
+* add preview app ([#198](https://github.com/blib-la/captain/issues/198)) ([f6b1132](https://github.com/blib-la/captain/commit/f6b11325c4d9c80e3eebc6718d84a03e9de5fdd7)), closes [#118](https://github.com/blib-la/captain/issues/118)
+
 # [1.0.0-alpha.39](https://github.com/blib-la/captain/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2024-04-11)
 
 
