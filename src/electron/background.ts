@@ -1,9 +1,11 @@
 import { app } from "electron";
 
 import { isTest } from "#/flags";
-import { cleanFiles, main } from "@/main";
+import { registerApps } from "@/app-loaders";
+import { main } from "@/main";
 import logger from "@/services/logger";
 import { watchStores } from "@/stores/watchers";
+import { cleanFiles } from "@/utils/clean-files";
 
 // Import core setup module.
 // This ensures the core setup process is executed explicitly, even though it may already be called
@@ -69,6 +71,9 @@ const gotTheLock = app.requestSingleInstanceLock();
 let unsubscribe: (() => Promise<void>) | undefined;
 
 if (gotTheLock || isTest) {
+	// Register user installed apps
+	registerApps();
+
 	main().then(() => {
 		logger.info("Application started successfully");
 		unsubscribe = watchStores();
