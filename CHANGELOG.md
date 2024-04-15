@@ -1,3 +1,10 @@
+# [1.0.0-alpha.43](https://github.com/blib-la/captain/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2024-04-15)
+
+
+### Features
+
+* **tray:** add link to explorer ([#204](https://github.com/blib-la/captain/issues/204)) ([cf50ee5](https://github.com/blib-la/captain/commit/cf50ee5dd82632c5ef883700c309f094cf0fa0bb)), closes [#175](https://github.com/blib-la/captain/issues/175)
+
 # [1.0.0-alpha.42](https://github.com/blib-la/captain/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2024-04-15)
 
 
