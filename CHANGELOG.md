@@ -1,3 +1,10 @@
+# [1.0.0-alpha.42](https://github.com/blib-la/captain/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2024-04-15)
+
+
+### Bug Fixes
+
+* clean files causes app to crash ([#203](https://github.com/blib-la/captain/issues/203)) ([d1cb64a](https://github.com/blib-la/captain/commit/d1cb64a580ce0e989407c18a4a0aa0b99e8853f6))
+
 # [1.0.0-alpha.41](https://github.com/blib-la/captain/compare/v1.0.0-alpha.40...v1.0.0-alpha.41) (2024-04-15)
 
 
