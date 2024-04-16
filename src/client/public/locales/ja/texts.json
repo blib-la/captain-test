@@ -4,6 +4,7 @@
   "downloadSuccessUnpacking": "ダウンロード成功！技術の宝箱を解凍しています。",
   "essentialModelDownloads": "必要な基本モデルのダウンロード！",
   "howToUseCaptain": "Captainはプロンプトを通じて簡単に制御できます。プロンプトは、Ctrl + Alt + Spaceのキーボードショートカットでいつでも開くことができます。何をしたいかを書き込むだけで、あとは私たちが対応します。",
+  "notConnectedToTheInternet": "インターネットに接続されていません",
   "preparation": "プロンプトを機能させるために、すぐにすべてを準備しています。",
   "preparationDone": "すべての準備が完了しました！ Captainを楽しんでください。",
   "quote1": "人間と同じように、AIも電気の羊の夢を見ます。Zzz...",
