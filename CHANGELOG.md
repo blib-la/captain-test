@@ -1,3 +1,10 @@
+# [1.0.0-alpha.45](https://github.com/blib-la/captain/compare/v1.0.0-alpha.44...v1.0.0-alpha.45) (2024-04-17)
+
+
+### Features
+
+* categories in marketplace ([#208](https://github.com/blib-la/captain/issues/208)) ([8a530c7](https://github.com/blib-la/captain/commit/8a530c7afcd33ca4133add5b68ded53a4e2de9cf))
+
 # [1.0.0-alpha.44](https://github.com/blib-la/captain/compare/v1.0.0-alpha.43...v1.0.0-alpha.44) (2024-04-16)
 
 
