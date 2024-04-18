@@ -1,3 +1,10 @@
+# [1.0.0-alpha.46](https://github.com/blib-la/captain/compare/v1.0.0-alpha.45...v1.0.0-alpha.46) (2024-04-18)
+
+
+### Features
+
+* safe write/copy file ([#209](https://github.com/blib-la/captain/issues/209)) ([9bf22a1](https://github.com/blib-la/captain/commit/9bf22a1cabf2c7410562ef02c46e36e1fa48cf0d)), closes [#193](https://github.com/blib-la/captain/issues/193)
+
 # [1.0.0-alpha.45](https://github.com/blib-la/captain/compare/v1.0.0-alpha.44...v1.0.0-alpha.45) (2024-04-17)
 
 
