@@ -1,3 +1,10 @@
+# [1.0.0-alpha.47](https://github.com/blib-la/captain/compare/v1.0.0-alpha.46...v1.0.0-alpha.47) (2024-04-18)
+
+
+### Bug Fixes
+
+* no hardcoded models ([#210](https://github.com/blib-la/captain/issues/210)) ([cf9a5f5](https://github.com/blib-la/captain/commit/cf9a5f572033a11f5ad0867db4ea1204263d21ab)), closes [#205](https://github.com/blib-la/captain/issues/205)
+
 # [1.0.0-alpha.46](https://github.com/blib-la/captain/compare/v1.0.0-alpha.45...v1.0.0-alpha.46) (2024-04-18)
 
 
