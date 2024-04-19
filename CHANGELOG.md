@@ -1,3 +1,10 @@
+# [1.0.0-alpha.49](https://github.com/blib-la/captain/compare/v1.0.0-alpha.48...v1.0.0-alpha.49) (2024-04-19)
+
+
+### Features
+
+* **marketplace:** added apps ([#215](https://github.com/blib-la/captain/issues/215)) ([da86cbc](https://github.com/blib-la/captain/commit/da86cbc60b736831585271a7cd4fdf2b37489c35)), closes [#211](https://github.com/blib-la/captain/issues/211)
+
 # [1.0.0-alpha.48](https://github.com/blib-la/captain/compare/v1.0.0-alpha.47...v1.0.0-alpha.48) (2024-04-19)
 
 
