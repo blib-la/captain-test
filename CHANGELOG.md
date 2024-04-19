@@ -1,3 +1,10 @@
+# [1.0.0-alpha.48](https://github.com/blib-la/captain/compare/v1.0.0-alpha.47...v1.0.0-alpha.48) (2024-04-19)
+
+
+### Features
+
+* multi window apps ([#213](https://github.com/blib-la/captain/issues/213)) ([5bd2207](https://github.com/blib-la/captain/commit/5bd22078c5a2a3a07700b0d5bd4cad17fdc5a6c5)), closes [#212](https://github.com/blib-la/captain/issues/212)
+
 # [1.0.0-alpha.47](https://github.com/blib-la/captain/compare/v1.0.0-alpha.46...v1.0.0-alpha.47) (2024-04-18)
 
 
