@@ -1,3 +1,10 @@
+# [1.0.0-alpha.50](https://github.com/blib-la/captain/compare/v1.0.0-alpha.49...v1.0.0-alpha.50) (2024-04-20)
+
+
+### Features
+
+* write download state to store ([#217](https://github.com/blib-la/captain/issues/217)) ([4913cb8](https://github.com/blib-la/captain/commit/4913cb8773aaab121f9248a28bef8d1e085818de))
+
 # [1.0.0-alpha.49](https://github.com/blib-la/captain/compare/v1.0.0-alpha.48...v1.0.0-alpha.49) (2024-04-19)
 
 
