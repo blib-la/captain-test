@@ -3,7 +3,7 @@ import { DOWNLOADS_MESSAGE_KEY, DownloadEvent, DownloadState } from "@captn/util
 import { download } from "electron-dl";
 
 import { apps } from "@/apps";
-import { inventoryStore } from "@/stores";
+import { downloadsStore, inventoryStore } from "@/stores";
 import { pushToStore } from "@/stores/utils";
 import { sendToAllWindows } from "@/stores/watchers";
 import {
@@ -147,6 +147,8 @@ export class DownloadManager {
 
 		// Prompt is our always open window, so we can use it for the download
 		const window_ = apps.prompt!;
+		const keyPath = item.destination.replaceAll("/", ".");
+		const downloadKeyPath = [item.destination, item.id].join("/").replaceAll("/", ".");
 		try {
 			await download(window_, item.source, {
 				overwrite: true,
@@ -157,13 +159,13 @@ export class DownloadManager {
 					: targetDestination,
 				onStarted() {
 					item.state = DownloadState.ACTIVE;
+					downloadsStore.set(downloadKeyPath, item.state);
 					sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 						action: DownloadEvent.STARTED,
 						payload: item,
 					});
 				},
 				onCompleted: async file => {
-					item.state = DownloadState.DONE;
 					this.currentDownloads -= 1;
 					this.downloadQueue = this.downloadQueue.filter(
 						queueItem => queueItem.id !== item.id
@@ -185,20 +187,20 @@ export class DownloadManager {
 								true
 							);
 							item.state = DownloadState.DONE;
+							pushToStore(inventoryStore, keyPath, {
+								id: item.id,
+								modelPath: targetDestination,
+								label: item.label,
+							});
+							downloadsStore.set(downloadKeyPath, item.state);
 							sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 								action: DownloadEvent.COMPLETED,
 								payload: item,
 							});
-							const modelPath = targetDestination;
-							const keyPath = item.destination.replaceAll("/", ".");
-							pushToStore(inventoryStore, keyPath, {
-								id: item.id,
-								modelPath,
-								label: item.label,
-							});
 						} catch {
 							item.state = DownloadState.FAILED;
 							this.currentDownloads -= 1;
+							downloadsStore.set(downloadKeyPath, item.state);
 							sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 								action: DownloadEvent.ERROR,
 								payload: item,
@@ -207,6 +209,12 @@ export class DownloadManager {
 						}
 					} else {
 						item.state = DownloadState.DONE;
+						pushToStore(inventoryStore, keyPath, {
+							id: item.id,
+							modelPath: targetDestination,
+							label: item.label,
+						});
+						downloadsStore.set(downloadKeyPath, item.state);
 						sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 							action: DownloadEvent.COMPLETED,
 							payload: item,
@@ -215,6 +223,7 @@ export class DownloadManager {
 				},
 				onProgress({ percent, transferredBytes, totalBytes }) {
 					item.state = DownloadState.ACTIVE;
+					downloadsStore.set(downloadKeyPath, item.state);
 					sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 						action: DownloadEvent.PROGRESS,
 						payload: {
@@ -229,6 +238,7 @@ export class DownloadManager {
 		} catch {
 			item.state = DownloadState.FAILED;
 			this.currentDownloads -= 1;
+			downloadsStore.set(downloadKeyPath, item.state);
 			sendToAllWindows(DOWNLOADS_MESSAGE_KEY, {
 				action: DownloadEvent.ERROR,
 				payload: item,
