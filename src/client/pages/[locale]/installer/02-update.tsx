@@ -9,10 +9,10 @@ import LinearProgress from "@mui/joy/LinearProgress";
 import Typography from "@mui/joy/Typography";
 import type { InferGetStaticPropsType } from "next";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 
 import { buildKey } from "#/build-key";
 import { ID } from "#/enums";
-import { I18nLink } from "@/atoms/i18n-link";
 import { useInstallProgress } from "@/ions/hooks/install-progress";
 import { makeStaticProperties } from "@/ions/i18n/get-static";
 import { InstallStep } from "@/organisms/installer";
@@ -31,30 +31,17 @@ export function InstallScreen({
 	size: string;
 	error: string;
 }) {
-	const { t } = useTranslation(["installer", "labels", "texts"]);
+	const { t } = useTranslation(["labels", "texts"]);
 
 	switch (status) {
-		case DownloadState.IDLE: {
-			return (
-				<InstallStep
-					heading={t("installer:install")}
-					illustration="/illustrations/minimalistic/meditation.svg"
-				>
-					<Typography level="body-lg" sx={{ my: 2, textAlign: "center" }}>
-						{t("installer:installerIntro")}
-					</Typography>
-				</InstallStep>
-			);
-		}
-
 		case DownloadState.UPDATE: {
 			return (
 				<InstallStep
-					heading={t("installer:installUpdate")}
-					illustration="/illustrations/minimalistic/meditation.svg"
+					heading={t("labels:installUpdate")}
+					illustration="/illustrations/minimalistic/search.svg"
 				>
 					<Typography level="body-lg" sx={{ my: 2, textAlign: "center" }}>
-						{t("installer:updateIntro")}
+						{t("texts:updateIntro")}
 					</Typography>
 				</InstallStep>
 			);
@@ -145,7 +132,7 @@ export function InstallScreen({
 		case DownloadState.FAILED: {
 			return (
 				<InstallStep
-					heading={t("labels:installFailed")}
+					heading={t("labels:updateFailed")}
 					illustration="/illustrations/minimalistic/bankruptcy.svg"
 				>
 					<Box
@@ -176,10 +163,11 @@ export function InstallScreen({
 }
 
 export default function Page(_properties: InferGetStaticPropsType<typeof getStaticProps>) {
-	const { t } = useTranslation(["common", "labels"]);
+	const { t } = useTranslation(["labels", "installer"]);
 	const { progress, status, name, size, error, reset } = useInstallProgress({
-		state: DownloadState.IDLE,
+		state: DownloadState.UPDATE,
 	});
+	const [starting, setStarting] = useState(false);
 
 	return (
 		<AppFrame titleBar={<TitleBar disableMaximize />}>
@@ -193,17 +181,6 @@ export default function Page(_properties: InferGetStaticPropsType<typeof getStat
 				/>
 				<Box sx={{ display: "flex", justifyContent: "flex-end", m: 1 }}>
 					<Box sx={{ display: "flex", gap: 1 }}>
-						<I18nLink href="/installer/01">
-							<Button
-								component="a"
-								disabled={
-									status !== DownloadState.IDLE && status !== DownloadState.FAILED
-								}
-							>
-								{t("common:previous")}
-							</Button>
-						</I18nLink>
-
 						{status === DownloadState.FAILED && (
 							<Button
 								data-testid="installer-02-report-problem"
@@ -218,22 +195,29 @@ export default function Page(_properties: InferGetStaticPropsType<typeof getStat
 						)}
 
 						{status === DownloadState.DONE ? (
-							<I18nLink href="/installer/03">
-								<Button component="a">{t("common:next")}</Button>
-							</I18nLink>
+							<Button
+								disabled={starting}
+								data-testid="installer-02-ready"
+								onClick={() => {
+									setStarting(true);
+									window.ipc.send(buildKey([ID.APP], { suffix: ":ready" }), true);
+								}}
+							>
+								{t("labels:finish")}
+							</Button>
 						) : (
 							<Button
 								data-testid="installer-02-start"
 								disabled={
-									status !== DownloadState.IDLE && status !== DownloadState.FAILED
+									status !== DownloadState.UPDATE &&
+									status !== DownloadState.FAILED
 								}
 								onClick={() => {
 									reset();
-
 									window.ipc.send(buildKey([ID.INSTALL], { suffix: ":start" }));
 								}}
 							>
-								{t("installer:install")}
+								{t("labels:update")}
 							</Button>
 						)}
 					</Box>
@@ -243,6 +227,6 @@ export default function Page(_properties: InferGetStaticPropsType<typeof getStat
 	);
 }
 
-export const getStaticProps = makeStaticProperties(["common", "installer", "texts", "labels"]);
+export const getStaticProps = makeStaticProperties(["installer", "texts", "labels"]);
 
 export { getStaticPaths } from "@/ions/i18n/get-static";
