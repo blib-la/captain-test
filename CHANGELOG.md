@@ -1,3 +1,10 @@
+# [1.0.0-alpha.51](https://github.com/blib-la/captain/compare/v1.0.0-alpha.50...v1.0.0-alpha.51) (2024-04-24)
+
+
+### Features
+
+* resources are updated automatically once a new version is released ([#224](https://github.com/blib-la/captain/issues/224)) ([2aab5fb](https://github.com/blib-la/captain/commit/2aab5fb2659a5eb9e6e8638dcb355d8a6ee28c90)), closes [#216](https://github.com/blib-la/captain/issues/216)
+
 # [1.0.0-alpha.50](https://github.com/blib-la/captain/compare/v1.0.0-alpha.49...v1.0.0-alpha.50) (2024-04-20)
 
 
