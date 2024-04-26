@@ -44,6 +44,9 @@
         "assets": [
           {
             "path": "dist/Captain-Setup*.exe"
+          },
+          {
+            "path": "dist/latest.yml"
           }
         ]
       }
