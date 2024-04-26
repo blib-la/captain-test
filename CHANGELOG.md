@@ -1,3 +1,10 @@
+# [1.0.0-alpha.2](https://github.com/blib-la/captain-test/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2024-04-26)
+
+
+### Features
+
+* "latest.yml" needs to be a part of the release ([66a0620](https://github.com/blib-la/captain-test/commit/66a062042ac0e3fab52a4d358cec1bcbf7bbc018))
+
 # 1.0.0-alpha.1 (2024-04-26)
 
 
