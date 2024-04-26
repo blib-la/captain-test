@@ -1,6 +1,5 @@
 {
   "branches": [
-    "main",
     {
       "name": "alpha",
       "prerelease": true
@@ -25,7 +24,6 @@
       "@semantic-release/exec",
       {
         "prepareCmd": "npm run build && node ./scripts/update-readme.mjs ${nextRelease.version}"
-
       }
     ],
     [
