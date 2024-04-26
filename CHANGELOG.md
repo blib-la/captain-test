@@ -1,3 +1,10 @@
+# [1.0.0-alpha.52](https://github.com/blib-la/captain/compare/v1.0.0-alpha.51...v1.0.0-alpha.52) (2024-04-26)
+
+
+### Features
+
+* image-to-image pipeline ([#225](https://github.com/blib-la/captain/issues/225)) ([9c17a71](https://github.com/blib-la/captain/commit/9c17a71ebbdb313fb6d4fb5ad9ceb366879a5613))
+
 # [1.0.0-alpha.51](https://github.com/blib-la/captain/compare/v1.0.0-alpha.50...v1.0.0-alpha.51) (2024-04-24)
 
 
